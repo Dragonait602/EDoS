@@ -77,10 +77,16 @@ body {
 	margin: 0 auto;
 
 	&__logo {
-    width: 100px;
-    height: auto;
+	width: 100px;
+	height: auto;
 	z-index: 10;
-	transition: margin 0.3s ease;
+	position: relative;
+	transition: transform 0.4s ease, left 0.4s ease;
+
+	@media (max-width: $md3) {
+		left: 0;
+		transform: translateX(0);
+	}
 	}
 
 	&__row {
@@ -88,6 +94,16 @@ body {
 		justify-content: space-between;
 		align-items: center;
 		padding: 10px 20px;
+		position: relative;
+	}
+}
+
+.logoShifted {
+	@media (max-width: $md3) {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		margin: 110px 0 0 -10px;
 	}
 }
 
@@ -153,7 +169,7 @@ body {
 		}
 	}
 
-	@media (max-width: 800px) {
+	@media (max-width: $md3) {
 		&__body {
 			position: fixed;
 			left: 0;
@@ -191,10 +207,6 @@ body {
 	}
 }
 
-.logoShifted {
-	margin: 20px 0 0 135px;
-}
-
 //===========================================================================================================
 
 .moduleInput {
@@ -203,7 +215,8 @@ body {
 
 .addInput {
   padding: 6px;
-  margin: 0 10px 0 0;
+  margin: 0 10px 0 0;	
+  border: #002862 1px black;
 }
 
 .editInput {
@@ -212,11 +225,11 @@ body {
 }
 
 .card {
-  border: 1px solid #ccc;
+  border: 1px solid #002862;
   border-radius: 12px;
   padding: 12px;
   margin-bottom: 10px;
-  background-color: #f9f9f9;
+  background-color: #0a3c88d8;
   color: black;
 }
 
@@ -281,6 +294,12 @@ body {
 		flex-direction: row;
 		padding: 0 50px;
 
+		@media (max-width: $md2) {
+			flex-direction: column;
+			padding: 0 25px;
+			text-align: center;
+		}
+
 		h3{
 			margin: 0 0 10px 0;
 			font-size: 24px;
@@ -293,6 +312,199 @@ body {
 
 		&F{
 			margin: 0 0 0 0;
+
+			@media (max-width: $md2){
+				margin: 20px 0 50px 0;
+			}
+		}
+
+		&L{
+			@media (max-width: $md2){
+				margin: 0px 0 30px 0;
+			}
 		}
 	}
+}
+
+.groups {
+	@include mixins.flexbox();
+	justify-content: space-around;
+	margin: 50px 0 0 0;
+	font-size: 20px;
+	font-weight: 500;
+
+	&__title{
+		font-size: 30px;
+		font-weight: 700;
+		text-align: center;
+		margin: 25px 0 0 0;
+	}
+
+	&__button{
+		border: 1px solid #2563eb;
+		background-color: #2563eb;
+		border-radius: 10px;
+		font-size: 20px;
+		text-align: center;
+		padding: 15px 30px;
+		margin: 15px 0 0 0;
+		color: white;
+
+		&:hover{
+			border: 1px solid #1e4fb7;
+			background-color: #1e4fb7;
+			transition: 0.3s;
+		}
+	}
+}
+
+//=======================================================================================================================
+// Додати до App.module.scss
+.authPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 100px);
+  padding: 20px;
+}
+
+.authContainer {
+  max-width: 400px;
+  width: 100%;
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.authForm {
+  h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+}
+
+.formGroup {
+  margin-bottom: 15px;
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+  
+  input, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+}
+
+.authButton {
+  width: 100%;
+  padding: 12px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+  
+  &:hover {
+    background-color: #45a049;
+  }
+}
+
+.authToggle {
+  width: 100%;
+  padding: 10px;
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  margin-top: 15px;
+  text-align: center;
+  
+  &:hover {
+    color: #333;
+    text-decoration: underline;
+  }
+}
+
+.error {
+  color: #f44336;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.menu__user {
+  padding: 10px;
+  color: #666;
+  font-size: 14px;
+}
+
+.authButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+//=======================================================================================================================
+/* Стилі, конвертовані з Tailwind CSS */
+
+.mainContentGrid {
+  margin: 1.25rem; /* m-5 */
+  display: grid;
+  grid-template-columns: 1fr; /* grid-cols-1 */
+  align-items: center;
+  gap: 2rem; /* gap-8 */
+
+  /* md:grid-cols-2 */
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.mainImage {
+  width: 100%; /* w-full */
+  max-width: 28rem; /* max-w-md */
+  margin-left: auto; /* mx-auto */
+  margin-right: auto; /* mx-auto */
+}
+
+.textContainer {
+  text-align: center; /* text-center */
+  
+  /* md:text-left */
+  @media (min-width: 768px) {
+    text-align: left;
+  }
+
+  /* space-y-4 */
+  & > *:not(:first-child) {
+    margin-top: 1rem;
+  }
+}
+
+.heading {
+  font-size: 2.25rem; /* text-4xl */
+  line-height: 2.5rem;
+  font-weight: 700; /* font-bold */
+}
+
+.detailsButton {
+  background-color: #2563eb; /* bg-blue-600 */
+  color: #ffffff; /* text-white */
+  padding: 0.5rem 1.5rem; /* px-6 py-2 */
+  border-radius: 0.25rem; /* rounded */
+  transition: background-color 0.2s ease-in-out; /* transition */
+  border: none;
+  cursor: pointer;
+
+  /* hover:bg-blue-700 */
+  &:hover {
+    background-color: #1d4ed8;
+  }
 }
