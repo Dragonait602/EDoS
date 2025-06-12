@@ -1,33 +1,34 @@
 'use strict';
-require('dotenv').config(); // Для використання змінних середовища (.env файл)
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const authRoutes = require('./routes/authRoutes'); // ІМПОРТ РОУТІВ
+
+// ІМПОРТ РОУТІВ
+const authRoutes = require('./routes/authRoutes');
+const studentRoutes = require('./routes/studentRoutes');
+const userRoutes = require('./routes/userRoutes'); // Додано маршрут для користувачів
 
 const app = express();
 
-// Підключення MongoDB (лише один раз тут)
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/mydb', {
-  // useNewUrlParser та useUnifiedTopology застаріли, але можна залишити
-})
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/mydb', {})
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.error('MongoDB connection error:', err));
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:5173', // Адреса вашого frontend
-  credentials: true
+    origin: 'http://localhost:5173',
+    credentials: true
 }));
-
 app.use(express.json());
 
 // Підключення роутів
-app.use('/api/auth', authRoutes); // Всі роути з authRoutes будуть доступні по /api/auth/...
+app.use('/api/auth', authRoutes);
+app.use('/api/students', studentRoutes);
+app.use('/api/users', userRoutes); // Додано використання маршруту для користувачів
 
-// Тестовий маршрут (можна залишити або видалити)
 app.get('/', (req, res) => {
-  res.send('Сервер працює!');
+    res.send('Сервер працює!');
 });
 
 const PORT = process.env.PORT || 5000;

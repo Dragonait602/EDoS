@@ -508,3 +508,243 @@ body {
     background-color: #1d4ed8;
   }
 }
+
+//=======================================================================================================================
+// СТИЛІ ДЛЯ СТОРІНКИ КОНТАКТІВ
+//=======================================================================================================================
+.contactsPage {
+  padding: 2rem 4rem;
+  max-width: 900px;
+  margin: 2rem auto;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+
+  @media (max-width: 768px) {
+    padding: 1rem 2rem;
+  }
+}
+
+.contactsSection {
+  margin-bottom: 2.5rem;
+
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #002862;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e0e0e0;
+  }
+
+  p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #333;
+  }
+}
+
+.contactList {
+  list-style: none;
+  padding: 0;
+
+  li {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  a {
+    color: #0056b3;
+    text-decoration: none;
+    font-weight: 500;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.teamGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.teamMember {
+    text-align: center;
+    padding: 1.5rem;
+    background-color: #f9f9f9;
+    border: 1px solid #e7e7e7;
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+
+    h4 {
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+        font-size: 1.25rem;
+    }
+
+    p {
+        font-size: 1rem;
+        color: #666;
+        margin-bottom: 0;
+    }
+}
+
+
+//=======================================================================================================================
+// ДОДАТКОВІ СТИЛІ ДЛЯ СТОРІНКИ СТУДЕНТІВ (2025)
+//=======================================================================================================================
+
+// 1. Оновлення стилів для КАРТКИ СТУДЕНТА (.card)
+//================================================================
+.card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem; // 24px
+  margin-bottom: 0; // Прибираємо, бо тепер є gap в сітці
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  color: #1a202c; // Темніший текст для кращої читабельності
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.07);
+  }
+
+  h2 {
+    font-size: 1.25rem; // 20px
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 0.5rem; // 8px
+  }
+
+  p {
+    margin: 0.25rem 0;
+    color: #4a5568; // Сіруватий колір для другорядного тексту
+    font-size: 0.9rem; // 14px
+    line-height: 1.5;
+    flex-grow: 1; // Дозволяє тексту займати вільне місце, вирівнюючи кнопки
+  }
+
+  b {
+    color: #2d3748;
+  }
+
+  // Стилізація кнопок всередині картки
+  div[style*="margin-top"] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem; // 8px
+    margin-top: 1.25rem !important; // 20px
+  }
+  
+  // Загальний стиль для кнопок
+  div button {
+    padding: 0.5rem 0.75rem; // 8px 12px
+    border-radius: 6px;
+    border: 1px solid transparent;
+    font-weight: 600;
+    font-size: 0.875rem; // 14px
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  }
+
+  // Кнопка "Видалити"
+  .delete {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border-color: #fecaca;
+    
+    &:hover {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+  }
+
+  // Інші кнопки (Редагувати, Оцінки, Скинути пароль)
+  button:not(.delete) {
+    background-color: #eff6ff;
+    color: #2563eb;
+    border-color: #dbeafe;
+
+    &:hover {
+      background-color: #dbeafe;
+    }
+  }
+}
+
+// 2. Оновлення сторінки СТУДЕНТІВ
+//================================================================
+// Контейнер для карток (робимо сітку)
+div[style*="padding: 20px"] {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.5rem; // 24px
+  padding: 2rem !important;
+
+  @media (max-width: 768px) {
+    padding: 1rem !important;
+    grid-template-columns: 1fr; // Одна колонка на мобільних
+  }
+}
+
+// 3. Покращення МОДАЛЬНИХ ВІКОН
+//================================================================
+.modal__window {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  max-width: 500px;
+  width: 90%;
+  padding: 2rem;
+
+  h3 {
+    text-align: center;
+    color: #1a202c;
+  }
+
+  // Покращення інпутів
+  .modal__input {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+
+    &:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+    }
+  }
+  
+  // Список оцінок
+  ul {
+    padding-left: 1.5rem;
+    li {
+      color: #2d3748;
+    }
+  }
+  
+  // Кнопка збереження
+  div[style*="margin-top"] > button {
+    background-color: #16a34a;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #15803d;
+    }
+  }
+}

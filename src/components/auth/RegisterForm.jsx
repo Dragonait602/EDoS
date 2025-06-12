@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext'; // Виправлений шлях імпорту
+import { useAuth } from '../../contexts/AuthContext';
 import styles from '../../App.module.scss';
 
 function RegisterForm() {
@@ -9,12 +9,16 @@ function RegisterForm() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Додаємо нові поля до стану
   const [formData, setFormData] = useState({
     username: '',
     password: '',
     email: '',
     role: 'student',
-    studentId: ''
+    secretKey: '',
+    name: '',
+    surname: '',
+    group: ''
   });
 
   const handleChange = (e) => {
@@ -31,112 +35,84 @@ function RegisterForm() {
     setLoading(true);
 
     try {
-      // Валідація даних
       if (!formData.username || !formData.password || !formData.email) {
         throw new Error("Будь ласка, заповніть всі обов'язкові поля");
       }
-
-      if (formData.role === 'student' && !formData.studentId) {
-        throw new Error('Для студента потрібно вказати ID');
+      if (formData.role === 'student' && (!formData.name || !formData.surname || !formData.group)) {
+        throw new Error("Для студента потрібно вказати ім'я, прізвище та групу");
       }
 
-      const success = await register(
-        formData.username,
-        formData.password,
-        formData.email,
-        formData.role,
-        formData.studentId
-      );
+      // Передаємо весь об'єкт formData в функцію реєстрації
+      await register(formData);
 
-      if (success) {
-        navigate('/dashboard'); // Редирект після успішної реєстрації
-      }
+      navigate('/students');
+
     } catch (error) {
       console.error('Registration error:', error);
-      setError(error.message || 'Сталася помилка під час реєстрації');
+      const errorMessage = error.response?.data?.message || error.message || 'Сталася помилка під час реєстрації';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className={styles.authPage}>
-      <div className={styles.authContainer}>
-        <div className={styles.authForm}>
-          <h2>Реєстрація</h2>
-          {error && <p className={styles.error}>{error}</p>}
-
-          <form onSubmit={handleSubmit}>
-            <div className={styles.formGroup}>
-              <label>Логін:</label>
-              <input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label>Пароль:</label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label>Email:</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label>Роль:</label>
-              <select
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                required
-              >
+    <div className={styles.authForm}>
+      <h2>Реєстрація</h2>
+      {error && <p className={styles.error}>{error}</p>}
+      <form onSubmit={handleSubmit}>
+        {/* Основні поля */}
+        <div className={styles.formGroup}>
+            <label>Логін:</label>
+            <input type="text" name="username" value={formData.username} onChange={handleChange} required />
+        </div>
+        <div className={styles.formGroup}>
+            <label>Пароль:</label>
+            <input type="password" name="password" value={formData.password} onChange={handleChange} required />
+        </div>
+        <div className={styles.formGroup}>
+            <label>Email:</label>
+            <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+        </div>
+        <div className={styles.formGroup}>
+            <label>Роль:</label>
+            <select name="role" value={formData.role} onChange={handleChange} required>
                 <option value="student">Студент</option>
                 <option value="teacher">Викладач</option>
                 <option value="admin">Адміністратор</option>
-              </select>
-            </div>
-
-            {formData.role === 'student' && (
-              <div className={styles.formGroup}>
-                <label>ID студента:</label>
-                <input
-                  type="text"
-                  name="studentId"
-                  value={formData.studentId}
-                  onChange={handleChange}
-                  required={formData.role === 'student'}
-                />
-              </div>
-            )}
-
-            <button 
-              type="submit" 
-              className={styles.authButton}
-              disabled={loading}
-            >
-              {loading ? 'Завантаження...' : 'Зареєструватися'}
-            </button>
-          </form>
+            </select>
         </div>
-      </div>
+        
+        {/* Додаткові поля, які з'являються для студента */}
+        {formData.role === 'student' && (
+          <>
+            <div className={styles.formGroup}>
+              <label>Ім'я:</label>
+              <input type="text" name="name" placeholder="Ваше ім'я" value={formData.name} onChange={handleChange} required />
+            </div>
+            <div className={styles.formGroup}>
+              <label>Прізвище:</label>
+              <input type="text" name="surname" placeholder="Ваше прізвище" value={formData.surname} onChange={handleChange} required />
+            </div>
+            <div className={styles.formGroup}>
+              <label>Група:</label>
+              <input type="text" name="group" placeholder="Наприклад, 1ПІ-24б" value={formData.group} onChange={handleChange} required />
+            </div>
+          </>
+        )}
+        
+        {/* Додаткове поле для вчителя/адміна */}
+        {(formData.role === 'teacher' || formData.role === 'admin') && (
+          <div className={styles.formGroup}>
+            <label>Секретний ключ:</label>
+            <input type="password" name="secretKey" placeholder="Введіть ключ доступу" value={formData.secretKey} onChange={handleChange} required />
+          </div>
+        )}
+
+        <button type="submit" className={styles.authButton} disabled={loading}>
+          {loading ? 'Завантаження...' : 'Зареєструватися'}
+        </button>
+      </form>
     </div>
   );
 }

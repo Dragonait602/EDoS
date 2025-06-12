@@ -5,7 +5,8 @@ const UserSchema = new mongoose.Schema({
     password: {type: String, required: true},
     role: {type: String, enum:['student', 'teacher', 'admin'], required: true},
     studentId: {type: mongoose.Schema.Types.ObjectId, ref: 'Student'},
-    email: {type: String, required: true, unique: true}
+    // Переконуємось, що email є required та unique
+    email: {type: String, required: true, unique: true} 
 });
 
-module.exports = mongoose.model('User', UserSchema)
+module.exports = mongoose.model('User', UserSchema);

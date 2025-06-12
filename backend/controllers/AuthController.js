@@ -3,10 +3,9 @@ const AuthService = require('../services/AuthService');
 class AuthController {
     static async register(req, res) {
         try {
-            const { username, password, email, role, studentId } = req.body;
-            // Тепер сервіс повертає токен і користувача
-            const { token, user } = await AuthService.register(username, password, email, role, studentId);
-            res.status(201).json({ token, user }); // ВИПРАВЛЕНО
+            // Просто передаємо весь об'єкт з даними в сервіс
+            const { token, user } = await AuthService.register(req.body);
+            res.status(201).json({ token, user });
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
@@ -22,7 +21,6 @@ class AuthController {
         }
     }
 
-    // ДОДАНО: Роут для отримання даних користувача за токеном
     static async getMe(req, res) {
         try {
             const user = await AuthService.getUserById(req.user.id);
@@ -32,4 +30,5 @@ class AuthController {
         }
     }
 }
+
 module.exports = AuthController;

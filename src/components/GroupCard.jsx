@@ -1,6 +1,6 @@
 import styles from '../App.module.scss'
 
-function StudentCard ({group}){
+function GroupCard ({group}){
     return (
         <>
             <button className={styles.groups}>{group}</button>
@@ -8,4 +8,4 @@ function StudentCard ({group}){
     );
 }
 
-export default StudentCard;
+export default GroupCard;

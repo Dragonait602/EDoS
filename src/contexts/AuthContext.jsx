@@ -7,7 +7,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(localStorage.getItem('token'));
-    const [loading, setLoading] = useState(true); // ДОДАНО: стан завантаження
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -15,21 +15,17 @@ export const AuthProvider = ({ children }) => {
             if (token) {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 try {
-                    // Цей роут ми створили на бекенді
                     const res = await axios.get('http://localhost:5000/api/auth/me');
                     setUser(res.data);
                 } catch (err) {
-                    console.error('Fetch user error:', err);
-                    // Якщо токен невалідний, виходимо з системи
                     localStorage.removeItem('token');
                     setToken(null);
                     setUser(null);
                     delete axios.defaults.headers.common['Authorization'];
                 }
             }
-            setLoading(false); // Завершуємо завантаження
+            setLoading(false);
         };
-
         fetchUser();
     }, [token]);
 
@@ -46,10 +42,10 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const register = async (username, password, email, role, studentId) => {
+    // ВИПРАВЛЕНО: функція тепер приймає один об'єкт з усіма даними
+    const register = async (registrationData) => {
         try {
-            // Бекенд тепер повертає токен і користувача
-            const res = await axios.post('http://localhost:5000/api/auth/register', { username, password, email, role, studentId });
+            const res = await axios.post('http://localhost:5000/api/auth/register', registrationData);
             localStorage.setItem('token', res.data.token);
             setToken(res.data.token);
             setUser(res.data.user);
@@ -70,7 +66,6 @@ export const AuthProvider = ({ children }) => {
 
     const value = { user, token, login, register, logout, loading };
 
-    // Показуємо children тільки після завершення перевірки авторизації
     return (
         <AuthContext.Provider value={value}>
             {!loading && children}

@@ -12,6 +12,8 @@ const StudentSchema = new mongoose.Schema({
     email: String,
     group: String,
     grades: [Gradeschema],
+    // ДОДАНО: посилання на модель User
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' } 
 })
 
 module.exports = mongoose.model('Student', StudentSchema);
